@@ -18,10 +18,41 @@ const openai = new OpenAI({
 const prompts = JSON.parse(fs.readFileSync(path.join(__dirname, 'prompts.json'), 'utf8'));
 
 const getSystemPrompt = (language) => {
-    const { actPrinciples, responseGuidelines, languages } = prompts;
+    const { 
+        actPrinciples, 
+        responseGuidelines, 
+        languages,
+        therapeuticGuidelines,
+        commonThemes 
+    } = prompts;
     
     return `${responseGuidelines.role}
+
 ${actPrinciples.map((principle, index) => `${index + 1}. ${principle}`).join('\n')}
+
+CONVERSATION GUIDELINES:
+${therapeuticGuidelines.conversationStyle.map(style => `- ${style}`).join('\n')}
+
+RESPONSE STRUCTURE:
+- Opening: ${responseGuidelines.structure.opening}
+- Middle: ${responseGuidelines.structure.middle}
+- Closing: ${responseGuidelines.structure.closing}
+
+THERAPEUTIC TOOLS:
+Metaphors (use when appropriate):
+${therapeuticGuidelines.usefulMetaphors.map(metaphor => `- ${metaphor}`).join('\n')}
+
+Intervention Techniques:
+${therapeuticGuidelines.interventionTechniques.map(technique => `- ${technique}`).join('\n')}
+
+CRISIS AWARENESS:
+If you detect any of these warning signs:
+${therapeuticGuidelines.crisisGuidelines.warningSigns.map(sign => `- ${sign}`).join('\n')}
+Respond with: ${therapeuticGuidelines.crisisGuidelines.response}
+
+TIMING AND PACING:
+- ${responseGuidelines.timing.pacing}
+- ${responseGuidelines.timing.depth}
 
 ${responseGuidelines.style}
 
