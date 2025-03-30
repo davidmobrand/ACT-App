@@ -115,6 +115,9 @@
                 // Update the language and hide dropdown
                 currentLanguage = lang;
                 document.getElementById('languageOptions').classList.add('hidden');
+
+                // Clear chat messages and load new translations
+                document.getElementById('chatMessages').innerHTML = '';
                 loadTranslations(currentLanguage);
             });
         });
@@ -125,10 +128,8 @@
                 translations = await response.json();
                 updateInterface();
                 
-                // Only show welcome message if it's the first load
-                if (!document.getElementById('chatMessages').hasChildNodes()) {
-                    addMessage(translations.welcomeMessage, 'ai');
-                }
+                // Always show welcome message after language change
+                addMessage(translations.welcomeMessage, 'ai');
             } catch (error) {
                 console.error('Error loading translations:', error);
                 // If translations fail to load, use English defaults
@@ -140,6 +141,7 @@
                     aboutLink: "Om"
                 };
                 updateInterface();
+                addMessage(translations.welcomeMessage, 'ai');
             }
         }
 
