@@ -12,7 +12,40 @@
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <h1 class="text-2xl font-bold text-gray-800">ACT Therapy Assistant</h1>
-                <a href="/" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Go to Chat</a>
+                <div class="flex items-center gap-4">
+                    <div class="relative" id="languageDropdown">
+                        <button id="languageButton" class="p-2 border rounded-lg flex items-center gap-2 bg-white">
+                            <i class="flag-icon flag-icon-se"></i>
+                            <span id="selectedLanguage">Svenska</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="languageOptions" class="absolute hidden mt-1 w-48 bg-white border rounded-lg shadow-lg z-50">
+                            <div class="p-1">
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="en">
+                                    <i class="flag-icon flag-icon-gb"></i>English
+                                </button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="da">
+                                    <i class="flag-icon flag-icon-dk"></i>Dansk
+                                </button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="sv">
+                                    <i class="flag-icon flag-icon-se"></i>Svenska
+                                </button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="no">
+                                    <i class="flag-icon flag-icon-no"></i>Norsk
+                                </button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="is">
+                                    <i class="flag-icon flag-icon-is"></i>Íslenska
+                                </button>
+                                <button class="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2" data-value="fi">
+                                    <i class="flag-icon flag-icon-fi"></i>Suomi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/" id="chatLink" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Go to Chat</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -140,5 +173,65 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        let currentLanguage = 'sv';  // Set default to Swedish
+        let translations = {};
+
+        // Update the language dropdown event listeners
+        document.getElementById('languageButton').addEventListener('click', () => {
+            const options = document.getElementById('languageOptions');
+            options.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('languageDropdown').contains(e.target)) {
+                document.getElementById('languageOptions').classList.add('hidden');
+            }
+        });
+
+        // Handle language selection
+        document.querySelectorAll('#languageOptions button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const lang = e.target.closest('button').dataset.value;
+                const flagIcon = e.target.closest('button').querySelector('.flag-icon').cloneNode(true);
+                const langText = e.target.closest('button').textContent.trim();
+                
+                // Update the button content
+                const selectedLang = document.getElementById('selectedLanguage');
+                const currentFlag = document.querySelector('#languageButton .flag-icon');
+                if (currentFlag) currentFlag.remove();
+                selectedLang.textContent = langText;
+                document.getElementById('languageButton').insertBefore(flagIcon, selectedLang);
+                
+                // Update the language and hide dropdown
+                currentLanguage = lang;
+                document.getElementById('languageOptions').classList.add('hidden');
+                loadTranslations(currentLanguage);
+            });
+        });
+
+        async function loadTranslations(lang) {
+            try {
+                const response = await fetch(`/translations/${lang}`);
+                translations = await response.json();
+                updateInterface();
+            } catch (error) {
+                console.error('Error loading translations:', error);
+                translations = {
+                    chatLink: "Go to Chat"
+                };
+                updateInterface();
+            }
+        }
+
+        function updateInterface() {
+            document.getElementById('chatLink').textContent = translations.chatLink || "Go to Chat";
+        }
+
+        // Initialize with default language
+        loadTranslations(currentLanguage);
+    </script>
 </body>
 </html> 

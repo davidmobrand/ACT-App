@@ -3,36 +3,48 @@
         "inputPlaceholder": "Type your message here...",
         "sendButton": "Send",
         "welcomeMessage": "Hello! I'm your ACT Therapy Assistant. How can I help you today?",
-        "errorMessage": "Sorry, an error occurred. Please try again."
+        "errorMessage": "Sorry, an error occurred. Please try again.",
+        "aboutLink": "About",
+        "chatLink": "Go to Chat"
     },
     "da": {
         "inputPlaceholder": "Skriv din besked her...",
         "sendButton": "Send",
         "welcomeMessage": "Hej! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjælpe dig i dag?",
-        "errorMessage": "Beklager, der opstod en fejl. Prøv venligst igen."
+        "errorMessage": "Beklager, der opstod en fejl. Prøv venligst igen.",
+        "aboutLink": "Om",
+        "chatLink": "Gå til chat"
     },
     "sv": {
         "inputPlaceholder": "Skriv ditt meddelande här...",
         "sendButton": "Skicka",
         "welcomeMessage": "Hej! Jag är din ACT-terapi assistent. Hur kan jag hjälpa dig idag?",
-        "errorMessage": "Tyvärr uppstod ett fel. Försök igen."
+        "errorMessage": "Tyvärr uppstod ett fel. Försök igen.",
+        "aboutLink": "Om",
+        "chatLink": "Gå till chatten"
     },
     "no": {
         "inputPlaceholder": "Skriv meldingen din her...",
         "sendButton": "Send",
         "welcomeMessage": "Hei! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjelpe deg i dag?",
-        "errorMessage": "Beklager, det oppstod en feil. Vennligst prøv igjen."
+        "errorMessage": "Beklager, det oppstod en feil. Vennligst prøv igjen.",
+        "aboutLink": "Om",
+        "chatLink": "Gå til chat"
     },
     "is": {
         "inputPlaceholder": "Skrifaðu skilaboðin þín hér...",
         "sendButton": "Senda",
         "welcomeMessage": "Halló! Ég er ACT-meðferðaraðstoðarmaðurinn þinn. Hvernig get ég aðstoðað þig í dag?",
-        "errorMessage": "Því miður kom upp villa. Vinsamlegast reyndu aftur."
+        "errorMessage": "Því miður kom upp villa. Vinsamlegast reyndu aftur.",
+        "aboutLink": "Um",
+        "chatLink": "Fara í spjall"
     },
     "fi": {
         "inputPlaceholder": "Kirjoita viestisi tähän...",
         "sendButton": "Lähetä",
         "welcomeMessage": "Hei! Olen ACT-terapia-avustajasi. Miten voin auttaa sinua tänään?",
-        "errorMessage": "Pahoittelut, tapahtui virhe. Yritä uudelleen."
+        "errorMessage": "Pahoittelut, tapahtui virhe. Yritä uudelleen.",
+        "aboutLink": "Tietoa",
+        "chatLink": "Siirry chattiin"
     }
 } 

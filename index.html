@@ -35,8 +35,8 @@
                 <div class="flex items-center gap-4">
                     <div class="relative" id="languageDropdown">
                         <button id="languageButton" class="p-2 border rounded-lg flex items-center gap-2 bg-white">
-                            <i class="flag-icon flag-icon-gb"></i>
-                            <span id="selectedLanguage">English</span>
+                            <i class="flag-icon flag-icon-se"></i>
+                            <span id="selectedLanguage">Svenska</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/about.html" class="text-blue-500 hover:text-blue-600">About</a>
+                    <a href="/about.html" id="aboutLink" class="text-blue-500 hover:text-blue-600">About</a>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
     </div>
 
     <script>
-        let currentLanguage = 'en';
+        let currentLanguage = 'sv';
         let translations = {};
 
         // Update the language dropdown event listeners
@@ -136,7 +136,8 @@
                     inputPlaceholder: "Type your message here...",
                     sendButton: "Send",
                     welcomeMessage: "Hello! I'm your ACT Therapy Assistant. How can I help you today?",
-                    errorMessage: "Sorry, an error occurred. Please try again."
+                    errorMessage: "Sorry, an error occurred. Please try again.",
+                    aboutLink: "Om"
                 };
                 updateInterface();
             }
@@ -145,6 +146,7 @@
         function updateInterface() {
             document.getElementById('userInput').placeholder = translations.inputPlaceholder || "Type your message here...";
             document.getElementById('sendButton').textContent = translations.sendButton || "Send";
+            document.getElementById('aboutLink').textContent = translations.aboutLink || "Om";
         }
 
         async function sendMessage() {
