@@ -16,8 +16,12 @@
             "dest": "server.js"
         },
         {
+            "src": "/translations/(.*)",
+            "dest": "server.js"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/"
+            "dest": "/$1"
         }
     ]
 } 
