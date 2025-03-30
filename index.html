@@ -12,6 +12,19 @@
             padding: 20px;
             background-color: #f5f5f5;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .language-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
         #chat-container {
             height: 500px;
             overflow-y: auto;
@@ -63,7 +76,17 @@
     </style>
 </head>
 <body>
-    <h1>ACT Therapy Assistant</h1>
+    <div class="header">
+        <h1>ACT Therapy Assistant</h1>
+        <select id="language-select" class="language-select">
+            <option value="en">English</option>
+            <option value="da">Dansk</option>
+            <option value="sv">Svenska</option>
+            <option value="no">Norsk</option>
+            <option value="is">Íslenska</option>
+            <option value="fi">Suomi</option>
+        </select>
+    </div>
     <div id="chat-container"></div>
     <div class="typing-indicator" id="typing-indicator">AI is thinking...</div>
     <div id="input-container">
@@ -76,6 +99,16 @@
         const messageInput = document.getElementById('message-input');
         const sendButton = document.getElementById('send-button');
         const typingIndicator = document.getElementById('typing-indicator');
+        const languageSelect = document.getElementById('language-select');
+
+        const welcomeMessages = {
+            en: 'Welcome to your ACT Therapy Assistant! How can I help you today?',
+            da: 'Velkommen til din ACT Terapi Assistent! Hvordan kan jeg hjælpe dig i dag?',
+            sv: 'Välkommen till din ACT Terapi Assistent! Hur kan jag hjälpa dig idag?',
+            no: 'Velkommen til din ACT Terapi Assistent! Hvordan kan jeg hjelpe deg i dag?',
+            is: 'Velkomin í ACT Meðferðaraðstoð! Hvernig get ég aðstoðað þig í dag?',
+            fi: 'Tervetuloa ACT Terapia Assistenttiin! Kuinka voin auttaa sinua tänään?'
+        };
 
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
@@ -99,13 +132,15 @@
             messageInput.value = '';
 
             try {
-                // Use relative URL for API calls
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ message })
+                    body: JSON.stringify({ 
+                        message,
+                        language: languageSelect.value 
+                    })
                 });
 
                 const data = await response.json();
@@ -132,8 +167,14 @@
             }
         });
 
+        // Update welcome message when language changes
+        languageSelect.addEventListener('change', () => {
+            chatContainer.innerHTML = ''; // Clear chat
+            addMessage(welcomeMessages[languageSelect.value] || welcomeMessages.en, false);
+        });
+
         // Add initial welcome message
-        addMessage('Welcome to your ACT Therapy Assistant! How can I help you today? (Updated)', false);
+        addMessage(welcomeMessages[languageSelect.value] || welcomeMessages.en, false);
     </script>
 </body>
 </html> 
