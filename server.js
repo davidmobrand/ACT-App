@@ -21,8 +21,11 @@ const translations = JSON.parse(fs.readFileSync(path.join(__dirname, 'translatio
 // Add endpoint to get translations for a specific language
 app.get('/translations/:lang', (req, res) => {
     const lang = req.params.lang;
-    const translation = translations[lang] || translations['en'];
-    res.json(translation);
+    if (translations[lang]) {
+        res.json(translations[lang]);
+    } else {
+        res.json(translations.en); // Default to English
+    }
 });
 
 const getSystemPrompt = (language) => {
@@ -73,7 +76,7 @@ app.post('/chat', async (req, res) => {
         const language = req.body.language || 'en';
         
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+            model: "gpt-4",
             messages: [
                 { role: "system", content: getSystemPrompt(language) },
                 { role: "user", content: userMessage }
@@ -84,12 +87,24 @@ app.post('/chat', async (req, res) => {
 
         res.json({ response: completion.choices[0].message.content });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'An error occurred while processing your request.' });
+        console.error('Error in chat endpoint:', error);
+        res.status(500).json({ 
+            error: 'An error occurred',
+            details: error.message 
+        });
     }
 });
 
-const PORT = 9090;
+// Serve HTML files
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+const PORT = process.env.PORT || 9090;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 }); 

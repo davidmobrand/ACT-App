@@ -1,38 +1,38 @@
 {
     "en": {
-        "sendButton": "Send",
         "inputPlaceholder": "Type your message here...",
-        "languageSelector": "Select language",
-        "welcomeMessage": "Hello! I'm your ACT therapy assistant. How can I help you today?"
+        "sendButton": "Send",
+        "welcomeMessage": "Hello! I'm your ACT Therapy Assistant. How can I help you today?",
+        "errorMessage": "Sorry, an error occurred. Please try again."
     },
     "da": {
-        "sendButton": "Send",
         "inputPlaceholder": "Skriv din besked her...",
-        "languageSelector": "Vælg sprog",
-        "welcomeMessage": "Hej! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjælpe dig i dag?"
+        "sendButton": "Send",
+        "welcomeMessage": "Hej! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjælpe dig i dag?",
+        "errorMessage": "Beklager, der opstod en fejl. Prøv venligst igen."
     },
     "sv": {
-        "sendButton": "Skicka",
         "inputPlaceholder": "Skriv ditt meddelande här...",
-        "languageSelector": "Välj språk",
-        "welcomeMessage": "Hej! Jag är din ACT-terapi assistent. Hur kan jag hjälpa dig idag?"
+        "sendButton": "Skicka",
+        "welcomeMessage": "Hej! Jag är din ACT-terapi assistent. Hur kan jag hjälpa dig idag?",
+        "errorMessage": "Tyvärr uppstod ett fel. Försök igen."
     },
     "no": {
-        "sendButton": "Send",
         "inputPlaceholder": "Skriv meldingen din her...",
-        "languageSelector": "Velg språk",
-        "welcomeMessage": "Hei! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjelpe deg i dag?"
+        "sendButton": "Send",
+        "welcomeMessage": "Hei! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjelpe deg i dag?",
+        "errorMessage": "Beklager, det oppstod en feil. Vennligst prøv igjen."
     },
     "is": {
-        "sendButton": "Senda",
         "inputPlaceholder": "Skrifaðu skilaboðin þín hér...",
-        "languageSelector": "Veldu tungumál",
-        "welcomeMessage": "Halló! Ég er ACT-meðferðaraðstoðarmaðurinn þinn. Hvernig get ég aðstoðað þig í dag?"
+        "sendButton": "Senda",
+        "welcomeMessage": "Halló! Ég er ACT-meðferðaraðstoðarmaðurinn þinn. Hvernig get ég aðstoðað þig í dag?",
+        "errorMessage": "Því miður kom upp villa. Vinsamlegast reyndu aftur."
     },
     "fi": {
-        "sendButton": "Lähetä",
         "inputPlaceholder": "Kirjoita viestisi tähän...",
-        "languageSelector": "Valitse kieli",
-        "welcomeMessage": "Hei! Olen ACT-terapia-assistenttisi. Kuinka voin auttaa sinua tänään?"
+        "sendButton": "Lähetä",
+        "welcomeMessage": "Hei! Olen ACT-terapia-avustajasi. Miten voin auttaa sinua tänään?",
+        "errorMessage": "Pahoittelut, tapahtui virhe. Yritä uudelleen."
     }
 } 

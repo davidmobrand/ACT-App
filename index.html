@@ -124,14 +124,27 @@
                 const response = await fetch(`/translations/${lang}`);
                 translations = await response.json();
                 updateInterface();
+                
+                // Only show welcome message if it's the first load
+                if (!document.getElementById('chatMessages').hasChildNodes()) {
+                    addMessage(translations.welcomeMessage, 'ai');
+                }
             } catch (error) {
                 console.error('Error loading translations:', error);
+                // If translations fail to load, use English defaults
+                translations = {
+                    inputPlaceholder: "Type your message here...",
+                    sendButton: "Send",
+                    welcomeMessage: "Hello! I'm your ACT Therapy Assistant. How can I help you today?",
+                    errorMessage: "Sorry, an error occurred. Please try again."
+                };
+                updateInterface();
             }
         }
 
         function updateInterface() {
-            document.getElementById('userInput').placeholder = translations.inputPlaceholder;
-            document.getElementById('sendButton').textContent = translations.sendButton;
+            document.getElementById('userInput').placeholder = translations.inputPlaceholder || "Type your message here...";
+            document.getElementById('sendButton').textContent = translations.sendButton || "Send";
         }
 
         async function sendMessage() {
@@ -155,11 +168,18 @@
                     })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
                 addMessage(data.response, 'ai');
             } catch (error) {
                 console.error('Error:', error);
-                addMessage('Sorry, an error occurred. Please try again.', 'ai');
+                addMessage(translations.errorMessage || 'Sorry, an error occurred. Please try again.', 'ai');
             }
         }
 
@@ -179,7 +199,6 @@
 
         // Initialize with default language
         loadTranslations(currentLanguage);
-        addMessage(translations.welcomeMessage, 'ai');
     </script>
 </body>
 </html> 
