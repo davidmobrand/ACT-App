@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const OpenAI = require('openai');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -12,29 +14,18 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
+// Load prompts from external file
+const prompts = JSON.parse(fs.readFileSync(path.join(__dirname, 'prompts.json'), 'utf8'));
+
 const getSystemPrompt = (language) => {
-    const languageNames = {
-        en: 'English',
-        da: 'Danish',
-        sv: 'Swedish',
-        no: 'Norwegian',
-        is: 'Icelandic',
-        fi: 'Finnish'
-    };
+    const { actPrinciples, responseGuidelines, languages } = prompts;
+    
+    return `${responseGuidelines.role}
+${actPrinciples.map((principle, index) => `${index + 1}. ${principle}`).join('\n')}
 
-    return `You are an AI therapist trained in Acceptance and Commitment Therapy (ACT). Your responses should:
-1. Emphasize psychological flexibility
-2. Help users accept difficult thoughts and feelings
-3. Practice mindfulness and present-moment awareness
-4. Focus on values-based actions
-5. Use metaphors and experiential exercises when appropriate
-6. Be compassionate and non-judgmental
-7. Avoid giving direct advice, instead guide users to their own insights
-8. Help users distinguish between their thoughts and their direct experience
+${responseGuidelines.style}
 
-Keep responses concise (2-3 paragraphs max) and focused on ACT principles.
-
-Important: You must respond in ${languageNames[language] || 'English'} language. Use appropriate cultural context and idioms for the language.`;
+Important: You must respond in ${languages[language] || 'English'} language. Use appropriate cultural context and idioms for the language.`;
 };
 
 app.post('/chat', async (req, res) => {
