@@ -1,0 +1,38 @@
+{
+    "en": {
+        "sendButton": "Send",
+        "inputPlaceholder": "Type your message here...",
+        "languageSelector": "Select language",
+        "welcomeMessage": "Hello! I'm your ACT therapy assistant. How can I help you today?"
+    },
+    "da": {
+        "sendButton": "Send",
+        "inputPlaceholder": "Skriv din besked her...",
+        "languageSelector": "Vælg sprog",
+        "welcomeMessage": "Hej! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjælpe dig i dag?"
+    },
+    "sv": {
+        "sendButton": "Skicka",
+        "inputPlaceholder": "Skriv ditt meddelande här...",
+        "languageSelector": "Välj språk",
+        "welcomeMessage": "Hej! Jag är din ACT-terapi assistent. Hur kan jag hjälpa dig idag?"
+    },
+    "no": {
+        "sendButton": "Send",
+        "inputPlaceholder": "Skriv meldingen din her...",
+        "languageSelector": "Velg språk",
+        "welcomeMessage": "Hei! Jeg er din ACT-terapi assistent. Hvordan kan jeg hjelpe deg i dag?"
+    },
+    "is": {
+        "sendButton": "Senda",
+        "inputPlaceholder": "Skrifaðu skilaboðin þín hér...",
+        "languageSelector": "Veldu tungumál",
+        "welcomeMessage": "Halló! Ég er ACT-meðferðaraðstoðarmaðurinn þinn. Hvernig get ég aðstoðað þig í dag?"
+    },
+    "fi": {
+        "sendButton": "Lähetä",
+        "inputPlaceholder": "Kirjoita viestisi tähän...",
+        "languageSelector": "Valitse kieli",
+        "welcomeMessage": "Hei! Olen ACT-terapia-assistenttisi. Kuinka voin auttaa sinua tänään?"
+    }
+} 

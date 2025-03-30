@@ -4,132 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACT Therapy Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .language-select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #chat-container {
-            height: 500px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            background-color: white;
-            margin-bottom: 20px;
+        .chat-container {
+            height: calc(100vh - 240px);
         }
         .message {
-            margin-bottom: 15px;
+            max-width: 80%;
+            margin: 10px;
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 10px;
         }
         .user-message {
             background-color: #e3f2fd;
-            margin-left: 20%;
+            margin-left: auto;
         }
-        .bot-message {
+        .ai-message {
             background-color: #f5f5f5;
-            margin-right: 20%;
-        }
-        #input-container {
-            display: flex;
-            gap: 10px;
-        }
-        #message-input {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #2196f3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:disabled {
-            background-color: #ccc;
-        }
-        .typing-indicator {
-            display: none;
-            color: #666;
-            font-style: italic;
+            margin-right: auto;
         }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>ACT Therapy Assistant</h1>
-        <select id="language-select" class="language-select">
-            <option value="en">English</option>
-            <option value="da">Dansk</option>
-            <option value="sv">Svenska</option>
-            <option value="no">Norsk</option>
-            <option value="is">Íslenska</option>
-            <option value="fi">Suomi</option>
-        </select>
-    </div>
-    <div id="chat-container"></div>
-    <div class="typing-indicator" id="typing-indicator">AI is thinking...</div>
-    <div id="input-container">
-        <input type="text" id="message-input" placeholder="Type your message here...">
-        <button id="send-button">Send</button>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg mb-4">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-800">ACT Therapy Assistant</h1>
+                <div class="flex items-center gap-4">
+                    <select id="languageSelect" class="p-2 border rounded-lg">
+                        <option value="en"><span class="flag-icon flag-icon-gb"></span> English</option>
+                        <option value="da"><span class="flag-icon flag-icon-dk"></span> Dansk</option>
+                        <option value="sv"><span class="flag-icon flag-icon-se"></span> Svenska</option>
+                        <option value="no"><span class="flag-icon flag-icon-no"></span> Norsk</option>
+                        <option value="is"><span class="flag-icon flag-icon-is"></span> Íslenska</option>
+                        <option value="fi"><span class="flag-icon flag-icon-fi"></span> Suomi</option>
+                    </select>
+                    <a href="/about.html" class="text-blue-500 hover:text-blue-600">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-lg p-4">
+            <div id="chatMessages" class="chat-container overflow-y-auto mb-4"></div>
+            
+            <div class="flex gap-2">
+                <input type="text" id="userInput" class="flex-grow p-2 border rounded-lg" placeholder="Type your message here...">
+                <button id="sendButton" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Send</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const chatContainer = document.getElementById('chat-container');
-        const messageInput = document.getElementById('message-input');
-        const sendButton = document.getElementById('send-button');
-        const typingIndicator = document.getElementById('typing-indicator');
-        const languageSelect = document.getElementById('language-select');
+        let currentLanguage = 'en';
+        let translations = {};
 
-        const welcomeMessages = {
-            en: 'Welcome to your ACT Therapy Assistant! How can I help you today?',
-            da: 'Velkommen til din ACT Terapi Assistent! Hvordan kan jeg hjælpe dig i dag?',
-            sv: 'Välkommen till din ACT Terapi Assistent! Hur kan jag hjälpa dig idag?',
-            no: 'Velkommen til din ACT Terapi Assistent! Hvordan kan jeg hjelpe deg i dag?',
-            is: 'Velkomin í ACT Meðferðaraðstoð! Hvernig get ég aðstoðað þig í dag?',
-            fi: 'Tervetuloa ACT Terapia Assistenttiin! Kuinka voin auttaa sinua tänään?'
-        };
+        async function loadTranslations(lang) {
+            try {
+                const response = await fetch(`/translations/${lang}`);
+                translations = await response.json();
+                updateInterface();
+            } catch (error) {
+                console.error('Error loading translations:', error);
+            }
+        }
 
-        function addMessage(message, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+        function updateInterface() {
+            document.getElementById('userInput').placeholder = translations.inputPlaceholder;
+            document.getElementById('sendButton').textContent = translations.sendButton;
         }
 
         async function sendMessage() {
-            const message = messageInput.value.trim();
+            const userInput = document.getElementById('userInput');
+            const message = userInput.value.trim();
             if (!message) return;
 
-            // Disable input and button while processing
-            messageInput.disabled = true;
-            sendButton.disabled = true;
-            typingIndicator.style.display = 'block';
-
             // Add user message to chat
-            addMessage(message, true);
-            messageInput.value = '';
+            addMessage(message, 'user');
+            userInput.value = '';
 
             try {
                 const response = await fetch('/chat', {
@@ -137,44 +91,42 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ 
-                        message,
-                        language: languageSelect.value 
+                    body: JSON.stringify({
+                        message: message,
+                        language: currentLanguage
                     })
                 });
 
                 const data = await response.json();
-                if (data.error) {
-                    addMessage('Sorry, there was an error processing your message. Please try again.', false);
-                } else {
-                    addMessage(data.response, false);
-                }
+                addMessage(data.response, 'ai');
             } catch (error) {
-                addMessage('Sorry, there was an error connecting to the server. Please try again.', false);
+                console.error('Error:', error);
+                addMessage('Sorry, an error occurred. Please try again.', 'ai');
             }
-
-            // Re-enable input and button
-            messageInput.disabled = false;
-            sendButton.disabled = false;
-            typingIndicator.style.display = 'none';
-            messageInput.focus();
         }
 
-        sendButton.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        document.getElementById('languageSelect').addEventListener('change', (e) => {
+            currentLanguage = e.target.value;
+            loadTranslations(currentLanguage);
         });
 
-        // Update welcome message when language changes
-        languageSelect.addEventListener('change', () => {
-            chatContainer.innerHTML = ''; // Clear chat
-            addMessage(welcomeMessages[languageSelect.value] || welcomeMessages.en, false);
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
 
-        // Add initial welcome message
-        addMessage(welcomeMessages[languageSelect.value] || welcomeMessages.en, false);
+        // Initialize with default language
+        loadTranslations(currentLanguage);
+        addMessage(translations.welcomeMessage, 'ai');
     </script>
 </body>
 </html> 

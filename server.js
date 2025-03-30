@@ -14,8 +14,16 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-// Load prompts from external file
+// Load prompts and translations from external files
 const prompts = JSON.parse(fs.readFileSync(path.join(__dirname, 'prompts.json'), 'utf8'));
+const translations = JSON.parse(fs.readFileSync(path.join(__dirname, 'translations.json'), 'utf8'));
+
+// Add endpoint to get translations for a specific language
+app.get('/translations/:lang', (req, res) => {
+    const lang = req.params.lang;
+    const translation = translations[lang] || translations['en'];
+    res.json(translation);
+});
 
 const getSystemPrompt = (language) => {
     const { 
